@@ -19,7 +19,7 @@ case $(id -u) in
 	apt-get dist-upgrade -y 
 	apt-get install python-software-properties
 	apt-get install -y xvfb 
-	apt-get install -y lynx
+	apt-get install -y lynx joe
 
 	# Set timezone
 	echo "Europe/Berlin" | tee /etc/timezone
@@ -40,7 +40,7 @@ case $(id -u) in
 	apt-get update 
 
 	## get wine and winetricks
-	aptitude install -y wine1.6 winetricks ## --without-recommends
+	aptitude install -y wine1.7 winetricks ## --without-recommends
 
 	## https://programmaticponderings.wordpress.com/2013/12/19/scripting-linux-swap-space/
 	## size of swapfile in megabytes
@@ -70,13 +70,12 @@ case $(id -u) in
 	echo "Defaulting to 32bit Win7"
 	export WINEARCH=win32
 
-	echo "Setting WINE to Win7" 
-	xvfb-run winetricks settings win7
+#	echo "Setting WINE to Win7" 
+#	xvfb-run winetricks settings win7
 
 	echo "Getting Visual C++ 2008 runtime"
 	xvfb-run winetricks -q vcrun2008
-	## Using native,builtin override for following DLLs: atl90 msvcm90 msvcp90 msvcr90 vcomp90 ## STN: maybe override ?
-msvcp110.dll
+	## Using native,builtin override for following DLLs: atl90 msvcm90 msvcp90 msvcr90 vcomp90 ## STN: maybe override ? msvcp110.dll
 	echo "Getting Visual Studio 2012 runtime"
 	## required for VCOMP110.DLL later in msconvert.exe
 	xvfb-run wine /vagrant/vcredist_x86.exe  /quiet
@@ -134,8 +133,12 @@ msvcp110.dll
 	xvfb-run winetricks -q ie8
 
 	echo "Also install Bruker CXP while at it"
-        wine "/vagrant/CompassXport_3.0.9.2_Setup.exe"
+	xvfb-run wine "/vagrant/CompassXport_3.0.9.2_Setup.exe" /S /v/qn 
 
+	## The mfc90.dll is nowhere properly installed ?!
+	## Copy manually from some temporary (?) directory 
+	
+	cp "/home/vagrant/.wine/drive_c/windows/winsxs/x86_Microsoft.VC90.MFC_1fc8b3b9a1e18e3b_9.0.30729.1_x-ww_405b0943/mfc90.dll" "/home/vagrant/.wine/drive_c/Program Files/Bruker Daltonik/CompassXport"
         ;;
 esac
 
@@ -144,11 +147,7 @@ exit
 
 ## Some tests locally
 
-
-
-wine ~/.wine/drive_c/Program\ Files/ProteoWizard/ProteoWizard\ 3.0.7374/msconvert.exe /vagrant/neg-MM8_1-A,1_01_376.d
-
-wine ~/.wine/drive_c/Program\ Files/ProteoWizard/ProteoWizard\ 3.0.7374/msconvert.exe /vagrant/amlodypina_30min.d.raw
+sh /vagrant/testconvert.sh
 
 
 
