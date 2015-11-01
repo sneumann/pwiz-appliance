@@ -142,12 +142,13 @@ case $(id -u) in
         ;;
 esac
 
-exit
-
-
 ## Some tests locally
 
-sh /vagrant/testconvert.sh
+if [ -d "neg-MM8_1-A,1_01_376.d" ] ; then 
+
+	sh /vagrant/testconvert.sh
+	
+fi
 
 
 
