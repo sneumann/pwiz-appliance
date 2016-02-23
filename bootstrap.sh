@@ -40,7 +40,11 @@ case $(id -u) in
 	apt-get update 
 
 	## get wine and winetricks
-	aptitude install -y wine1.7 winetricks ## --without-recommends
+	aptitude install -y wine1.7 ## --without-recommends
+
+	## overwrite with updated winetricks, version does not provide vcrun2013
+	wget https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks -O /usr/bin/winetricks
+	chmod +x /usr/bin/winetricks 
 
 	## https://programmaticponderings.wordpress.com/2013/12/19/scripting-linux-swap-space/
 	## size of swapfile in megabytes
@@ -75,6 +79,10 @@ case $(id -u) in
 
 	echo "Getting Visual C++ 2008 runtime"
 	xvfb-run winetricks -q vcrun2008
+
+        echo "Getting Visual C++ 2008 runtime"
+        xvfb-run winetricks -q vcrun2013               
+
 	## Using native,builtin override for following DLLs: atl90 msvcm90 msvcp90 msvcr90 vcomp90 ## STN: maybe override ? msvcp110.dll
 	echo "Getting Visual Studio 2012 runtime"
 	## required for VCOMP110.DLL later in msconvert.exe
@@ -124,7 +132,8 @@ case $(id -u) in
 	export WINEDLLOVERRIDES="mfc90=n,msvcr110=n,msvcp110=n,vcomp110=n"
 
 	echo "And FINALLY install pwiz"
-	xvfb-run msiexec /i  /vagrant/pwiz-setup-3.0.7374-x86.msi /quiet
+#	xvfb-run msiexec /i  /vagrant/pwiz-setup-3.0.7374-x86.msi /quiet
+        xvfb-run msiexec /i  /vagrant/pwiz-setup-3.0.9098-x86.msi /quiet
 
 	## and check the success:
 	xvfb-run wine ".wine/drive_c/Program Files/ProteoWizard/ProteoWizard 3.0.7374/msconvert.exe"
@@ -132,8 +141,8 @@ case $(id -u) in
 	echo "Installing IE8 as CompassXport prerequisite"
 	xvfb-run winetricks -q ie8
 
-	echo "Also install Bruker CXP while at it"
-	xvfb-run wine "/vagrant/CompassXport_3.0.9.2_Setup.exe" /S /v/qn 
+#	echo "Also install Bruker CXP while at it"
+#	xvfb-run wine "/vagrant/CompassXport_3.0.9.2_Setup.exe" /S /v/qn 
 
 	## The mfc90.dll is nowhere properly installed ?!
 	## Copy manually from some temporary (?) directory 
@@ -144,10 +153,10 @@ esac
 
 ## Some tests locally
 
-if [ -d "neg-MM8_1-A,1_01_376.d" ] ; then 
+if [ -d "/vagrant/neg-MM8_1-A,1_01_376.d" ] ; then 
 
-	sh /vagrant/testconvert.sh
-	
+#	sh /vagrant/testconvert.sh
+echo skipped
 fi
 
 

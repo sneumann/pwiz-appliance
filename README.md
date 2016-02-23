@@ -31,6 +31,10 @@ https://www.bruker.com/de/service/support-upgrades/software-downloads/mass-spect
 Proteowizard can be obtained from:
 http://proteowizard.sourceforge.net/downloads.shtml
 
+There is a somewhat convoluted way for direct download, please check the licenses on http://proteowizard.sourceforge.net/downloads.shtml:
+````wget 'http://teamcity.labkey.org:8080/repository/download/bt36/.lastSuccessful/pwiz-setup-'$(wget -O- http://teamcity.labkey.org:8080/repository/download/bt36/.lastSuccessful/VERSION?guest=1)'-x86.msi?guest=1'````
+
+
 msxml3.msi can be found here:
 http://repository.playonlinux.com/divers/msxml3.msi
 
@@ -45,5 +49,6 @@ And get netframework3.exe from http://www.oldversion.com/download-.Net-Framework
 
 A very similar project is this environment from John Chilton:
 https://github.com/jmchilton/proteomics-wine-env
+
 
 
