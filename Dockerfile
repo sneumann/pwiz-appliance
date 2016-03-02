@@ -20,7 +20,7 @@ RUN apt-get install -y software-properties-common \
 	&& apt-get update
 
 ## get wine and winetricks
-RUN apt-get install -y wine1.8
+RUN apt-get install -y wine1.8 winbind
 
 ## overwrite with updated winetricks, version does not provide
 ## vcrun2013
