@@ -52,7 +52,7 @@ ENV WINEARCH win32
 
 # Install .NET Framework 4.0 
 
-RUN wine wineboot && xvfb-run winetricks --unattended vcrun2008 vcrun2010 vcrun2013 dotnet35sp1 dotnet40
+RUN wine wineboot && xvfb-run -a winetricks --unattended vcrun2008 vcrun2010 vcrun2013 dotnet35sp1 dotnet40
 
 ADD get_msconvert.sh /tmp
 RUN /tmp/get_msconvert.sh
